@@ -1,10 +1,8 @@
-package com.mazhenxing.reactor.test;
+package com.mazhenxing.reactor.reactor;
 
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -14,12 +12,12 @@ public class FluxTest {
         generate();
     }
 
-    public static void just(){
+    public static void just() {
         Flux<String> just = Flux.just("11");
         Flux.just("11").subscribe(System.out::print);
     }
 
-    public static void generate(){
+    public static void generate() {
         Flux.generate(sink -> {
             sink.next(range());
             sink.complete();
@@ -27,7 +25,7 @@ public class FluxTest {
                 .subscribeOn(Schedulers.elastic())
                 .map(x -> x + "1")
                 .subscribeOn(Schedulers.single())
-                .map(x -> x +"2")
+                .map(x -> x + "2")
                 .toStream()
                 .forEach(System.out::print);
 
@@ -39,19 +37,19 @@ public class FluxTest {
         });
     }
 
-    public static Random range(){
+    public static Random range() {
         Random random = new Random();
         System.out.println("random");
         return random;
     }
 
 
-    public static void take(){
+    public static void take() {
         Flux.range(1, 1000).take(10).toStream().forEach(System.out::println);
     }
 
 
-    public static void  scheduler(){
+    public static void scheduler() {
         Flux.create(sink -> {
             sink.next(Thread.currentThread().getName());
             sink.complete();
@@ -66,7 +64,7 @@ public class FluxTest {
     }
 
 
-    public static void  buffer(){
+    public static void buffer() {
         Flux.range(1, 100).buffer(20).subscribe(System.out::println);
     }
 }
